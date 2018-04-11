@@ -98,6 +98,7 @@ public class SecApproximator {
     }
 
     private double calculateError(double x, int n) {
+        // maybe 2*(n+1)
         return Math.abs(Math.pow(x, n + 1) / factorial(n + 1));
     }
 }
