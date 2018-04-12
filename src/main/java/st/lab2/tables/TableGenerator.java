@@ -1,13 +1,8 @@
 package st.lab2.tables;
 
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.sun.media.jfxmedia.logging.Logger;
-import org.mockito.ArgumentMatcher;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +41,10 @@ public class TableGenerator {
         Writer writer;
         try {
             writer = new FileWriter(outFile);
-            StatefulBeanToCsv<Point> beanToCsv = new StatefulBeanToCsvBuilder<Point>(writer).build();
-            beanToCsv.write(points);
+
+            for (Point point : points)
+                writer.write("" + point.getX() + "," + point.getY() + "\n");
+
             writer.close();
         } catch (Exception ex) {
             Logger.logMsg(0, ex.getMessage());

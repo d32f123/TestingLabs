@@ -1,23 +1,28 @@
 package st.lab2.tables;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 import com.sun.media.jfxmedia.logging.Logger;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class TableReader {
     List<Point> readCsv(String filename) {
+        ArrayList<Point> points = new ArrayList<>();
         try {
-            Reader reader = new FileReader(filename);
-            CsvToBean<Point> csvToBean = new CsvToBeanBuilder<Point>(reader).withType(Point.class).build();
+            Scanner scanner = new Scanner(new File(filename));
+            scanner.useDelimiter("[,\n]");
 
-            return csvToBean.parse();
-        } catch(Exception ex) {
+            double x, y;
+            while (scanner.hasNext()) {
+                x = Double.parseDouble(scanner.next());
+                y = Double.parseDouble(scanner.next());
+                points.add(new Point(x, y));
+            }
+            scanner.close();
+            return points;
+        } catch (Exception ex) {
             Logger.logMsg(0, ex.getMessage());
             throw new IllegalArgumentException(ex.getMessage());
         }

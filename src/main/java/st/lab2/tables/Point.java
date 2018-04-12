@@ -1,12 +1,7 @@
 package st.lab2.tables;
 
-import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.CsvCustomBindByPosition;
-
 public class Point {
-    @CsvBindByPosition(position = 0, required = true)
     private double x;
-    @CsvBindByPosition(position = 1, required = true)
     private double y;
 
     public Point(double x, double y) {
