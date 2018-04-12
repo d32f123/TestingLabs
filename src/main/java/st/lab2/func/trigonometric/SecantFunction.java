@@ -3,7 +3,11 @@ package st.lab2.func.trigonometric;
 import st.lab2.func.MathFunction;
 
 public class SecantFunction implements MathFunction {
-    private final SineFunction sineFunction = new SineFunction();
+    private final SineFunction sineFunction;
+
+    public SecantFunction(SineFunction sineFunction) {
+        this.sineFunction = sineFunction;
+    }
 
     @Override
     public double evaluate(double x) {

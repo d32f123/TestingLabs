@@ -25,8 +25,6 @@ public class SineFunction implements MathFunction {
             this.allowedError = allowedError;
     }
 
-    private boolean isNegative;
-
     private double factorial(int n) {
         double f = 1;
         for (int i=1; i<=n; i++) {
@@ -52,18 +50,13 @@ public class SineFunction implements MathFunction {
     private double truncateX(double x) {
         // if x is larger than the first sine wave, truncate it
         if (Math.abs(x) >= Math.PI) {
-            int waveNumber = (int)(Math.abs(x) / Math.PI);
-
-            // if odd sine wave, then it is negative
-            if (waveNumber % 2 == 1) {
-                this.isNegative = true;
-            }
+            int waveNumber = (int)((Math.abs(x) + Math.PI) / (2 * Math.PI));
 
             if (x < 0)
                 waveNumber = (-waveNumber);
 
             // do the truncation
-            x = x - Math.PI * waveNumber;
+            x = x - 2 * Math.PI * waveNumber;
         }
         return x;
     }
@@ -72,10 +65,15 @@ public class SineFunction implements MathFunction {
         double answer = 0.0;
         for (int i = 0; i <= n; ++i)
         {
-            answer += coeffs.get(i) * Math.pow(x, i<<1);
+            answer += coeffs.get(i) * Math.pow(x, i*2 + 1);
         }
-        if (isNegative)
-            answer = (-answer);
+
+        // wtf?
+        if (answer >= 1.0)
+            answer = 1.0 - EPSILON;
+        else if (answer <= -1.0)
+            answer = -1.0 + EPSILON;
+
         return answer;
     }
 
