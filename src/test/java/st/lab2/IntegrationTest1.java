@@ -15,8 +15,7 @@ public class IntegrationTest1 {
     @BeforeAll
     static void init() {
 
-        mainSystem = new MainSystem(getCosecantFunctionStub(), getSecantFunctionStub(), getSineFunctionStub(),
-                getBase2LogarithmStub(), getBase3LogarithmStub(), getBase5LogarithmStub(), getBase10LogarithmStub());
+        mainSystem = new MainSystem(getSubSystem1Stub(), getSubSystem2Stub());
     }
 
     @ParameterizedTest

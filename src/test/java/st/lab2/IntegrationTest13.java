@@ -15,18 +15,22 @@ import st.lab2.subsystems.SubSystem1;
 import st.lab2.subsystems.SubSystem2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static st.lab2.tables.FunctionMocker.*;
+import static st.lab2.tables.FunctionMocker.getNaturalLogarithmStub;
+import static st.lab2.tables.FunctionMocker.getSineFunctionStub;
 
-public class IntegrationTest10 {
+public class IntegrationTest13 {
     private static final double ACCURACY = 0.00000001;
+    private static final double LOG_ACCURACY = 0.0001;
     private static MainSystem mainSystem;
 
     @BeforeAll
     static void init() {
 
-        SecantFunction secantFunction = new SecantFunction(getCosineFunctionStub());
-        CosecantFunction cosecantFunction = new CosecantFunction(getSineFunctionStub());
         SineFunction sineFunction = new SineFunction();
+        CosineFunction cosineFunction = new CosineFunction(sineFunction);
+
+        SecantFunction secantFunction = new SecantFunction(cosineFunction);
+        CosecantFunction cosecantFunction = new CosecantFunction(sineFunction);
 
         Base2Logarithm base2Logarithm = new Base2Logarithm(getNaturalLogarithmStub());
         Base3Logarithm base3Logarithm = new Base3Logarithm(getNaturalLogarithmStub());
@@ -43,6 +47,6 @@ public class IntegrationTest10 {
     @ParameterizedTest
     @CsvFileSource(resources = "/values.csv")
     void testSystemWithAllStubs(double x, double yExpected) {
-        assertEquals(yExpected, mainSystem.evaluate(x, ACCURACY), ACCURACY);
+        assertEquals(yExpected, mainSystem.evaluate(x, x <= 0 ? ACCURACY : LOG_ACCURACY), x <= 0 ? ACCURACY : LOG_ACCURACY);
     }
 }

@@ -6,6 +6,8 @@ import st.lab2.func.trigonometric.CosecantFunction;
 import st.lab2.func.trigonometric.CosineFunction;
 import st.lab2.func.trigonometric.SecantFunction;
 import st.lab2.func.trigonometric.SineFunction;
+import st.lab2.subsystems.SubSystem1;
+import st.lab2.subsystems.SubSystem2;
 
 import java.util.List;
 
@@ -24,6 +26,8 @@ public class FunctionMocker {
     private static final String Log5File = "log5.csv";
     private static final String Log10File = "log10.csv";
     private static final String NaturalLogFile = "ln.csv";
+    private static final String SubSystem1File = "sub1.csv";
+    private static final String SubSystem2File = "sub2.csv";
 
 
     private static SineFunction sineFunctionStub;
@@ -35,6 +39,8 @@ public class FunctionMocker {
     private static Base5Logarithm base5LogarithmStub;
     private static Base10Logarithm base10LogarithmStub;
     private static NaturalLogarithm naturalLogarithmStub;
+    private static SubSystem1 subSystem1Stub;
+    private static SubSystem2 subSystem2Stub;
 
     static {
         sineFunctionStub = mock(SineFunction.class);
@@ -46,6 +52,8 @@ public class FunctionMocker {
         base5LogarithmStub = mock(Base5Logarithm.class);
         base10LogarithmStub = mock(Base10Logarithm.class);
         naturalLogarithmStub = mock(NaturalLogarithm.class);
+        subSystem1Stub = mock(SubSystem1.class);
+        subSystem2Stub = mock(SubSystem2.class);
 
         do_mock(sineFunctionStub, SineFile);
         do_mock(cosineFunctionStub, CosineFile);
@@ -56,6 +64,8 @@ public class FunctionMocker {
         do_mock(base5LogarithmStub, Log5File);
         do_mock(base10LogarithmStub, Log10File);
         do_mock(naturalLogarithmStub, NaturalLogFile);
+        do_mock(subSystem1Stub, SubSystem1File);
+        do_mock(subSystem2Stub, SubSystem2File);
     }
 
     private static void do_mock(MathFunction function, List<Point> points) {
@@ -104,5 +114,13 @@ public class FunctionMocker {
 
     public static NaturalLogarithm getNaturalLogarithmStub() {
         return naturalLogarithmStub;
+    }
+
+    public static SubSystem1 getSubSystem1Stub() {
+        return subSystem1Stub;
+    }
+
+    public static SubSystem2 getSubSystem2Stub() {
+        return subSystem2Stub;
     }
 }

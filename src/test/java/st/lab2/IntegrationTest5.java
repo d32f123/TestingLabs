@@ -7,6 +7,8 @@ import st.lab2.func.logarithmic.Base2Logarithm;
 import st.lab2.func.trigonometric.CosecantFunction;
 import st.lab2.func.trigonometric.SecantFunction;
 import st.lab2.func.trigonometric.SineFunction;
+import st.lab2.subsystems.SubSystem1;
+import st.lab2.subsystems.SubSystem2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static st.lab2.tables.FunctionMocker.*;
@@ -19,13 +21,14 @@ public class IntegrationTest5 {
     @BeforeAll
     static void init() {
 
-        CosecantFunction cosecantFunction = new CosecantFunction(getSineFunctionStub());
         SecantFunction secantFunction = new SecantFunction(getCosineFunctionStub());
-        SineFunction sineFunction = new SineFunction();
-        Base2Logarithm base2Logarithm = new Base2Logarithm(getNaturalLogarithmStub());
+        CosecantFunction cosecantFunction = new CosecantFunction(getSineFunctionStub());
 
-        mainSystem = new MainSystem(cosecantFunction, secantFunction, sineFunction,
-                base2Logarithm, getBase3LogarithmStub(), getBase5LogarithmStub(), getBase10LogarithmStub());
+        SubSystem1 subSystem1 = new SubSystem1(cosecantFunction, getSineFunctionStub(), secantFunction);
+        SubSystem2 subSystem2 = new SubSystem2(getBase2LogarithmStub(), getBase3LogarithmStub(),
+                getBase5LogarithmStub(), getBase10LogarithmStub());
+
+        mainSystem = new MainSystem(subSystem1, subSystem2);
     }
 
     @ParameterizedTest

@@ -3,7 +3,7 @@ package st.lab2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import st.lab2.func.trigonometric.CosecantFunction;
+import st.lab2.subsystems.SubSystem1;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static st.lab2.tables.FunctionMocker.*;
@@ -15,11 +15,9 @@ public class IntegrationTest2 {
 
     @BeforeAll
     static void init() {
+        SubSystem1 subSystem1 = new SubSystem1(getCosecantFunctionStub(), getSineFunctionStub(), getSecantFunctionStub());
 
-        CosecantFunction cosecantFunction = new CosecantFunction(getSineFunctionStub());
-
-        mainSystem = new MainSystem(cosecantFunction, getSecantFunctionStub(), getSineFunctionStub(),
-                getBase2LogarithmStub(), getBase3LogarithmStub(), getBase5LogarithmStub(), getBase10LogarithmStub());
+        mainSystem = new MainSystem(subSystem1, getSubSystem2Stub());
     }
 
     @ParameterizedTest

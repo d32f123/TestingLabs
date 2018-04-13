@@ -11,10 +11,12 @@ import st.lab2.func.trigonometric.CosecantFunction;
 import st.lab2.func.trigonometric.CosineFunction;
 import st.lab2.func.trigonometric.SecantFunction;
 import st.lab2.func.trigonometric.SineFunction;
+import st.lab2.subsystems.SubSystem1;
+import st.lab2.subsystems.SubSystem2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static st.lab2.tables.FunctionMocker.getNaturalLogarithmStub;
-import static st.lab2.tables.FunctionMocker.getSineFunctionStub;
+import static st.lab2.tables.FunctionMocker.*;
+import static st.lab2.tables.FunctionMocker.getBase10LogarithmStub;
 
 public class IntegrationTest9 {
     private static final double ACCURACY = 0.00000001;
@@ -23,20 +25,19 @@ public class IntegrationTest9 {
     @BeforeAll
     static void init() {
 
-        CosineFunction cosineFunction = new CosineFunction(getSineFunctionStub());
-        SecantFunction secantFunction = new SecantFunction(cosineFunction);
-
+        SecantFunction secantFunction = new SecantFunction(getCosineFunctionStub());
         CosecantFunction cosecantFunction = new CosecantFunction(getSineFunctionStub());
-
         SineFunction sineFunction = new SineFunction();
 
         Base2Logarithm base2Logarithm = new Base2Logarithm(getNaturalLogarithmStub());
         Base3Logarithm base3Logarithm = new Base3Logarithm(getNaturalLogarithmStub());
         Base5Logarithm base5Logarithm = new Base5Logarithm(getNaturalLogarithmStub());
-        Base10Logarithm base10Logarithm = new Base10Logarithm(getNaturalLogarithmStub());
 
-        mainSystem = new MainSystem(cosecantFunction, secantFunction, sineFunction,
-                base2Logarithm, base3Logarithm, base5Logarithm, base10Logarithm);
+        SubSystem1 subSystem1 = new SubSystem1(cosecantFunction, sineFunction, secantFunction);
+        SubSystem2 subSystem2 = new SubSystem2(base2Logarithm, base3Logarithm,
+                base5Logarithm, getBase10LogarithmStub());
+
+        mainSystem = new MainSystem(subSystem1, subSystem2);
     }
 
     @ParameterizedTest

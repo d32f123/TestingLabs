@@ -52,6 +52,19 @@ class TableGeneratorTest {
     }
 
     @Test
+    void generateSub1() {
+        tableGenerator.generate(trigValues, (x) -> (1. / sin(x)) / sin(x) / (1. / cos(x)), "sub1.csv");
+    }
+
+    @Test
+    void generateSub2() {
+        tableGenerator.generate(logValues, x -> ((Math.pow(Math.log(x) / Math.log(3) / Math.log10(x), 3) + (Math.log(x) / Math.log(3)) ) *
+                Math.log10(x)) *
+                ( Math.pow((Math.log(x) / Math.log(5)) + ((Math.log10(x) * (Math.log(x) / Math.log(2)))
+                        + (Math.log(x) / Math.log(2))), 2) ), "sub2.csv");
+    }
+
+    @Test
     void generateCosine() {
         tableGenerator.generate(trigValues, TableGeneratorTest::cos, "cos.csv");
     }
