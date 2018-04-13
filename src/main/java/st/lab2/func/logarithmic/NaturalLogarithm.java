@@ -25,7 +25,7 @@ public class NaturalLogarithm implements MathFunction {
     }
 
     private double calculateError(double x, int n) {
-        return Math.abs(Math.pow(x - 1, n + 1) / (n + 1));
+        return 1. / (n + 1);
     }
 
     private void calculateCoefficients(int n) {

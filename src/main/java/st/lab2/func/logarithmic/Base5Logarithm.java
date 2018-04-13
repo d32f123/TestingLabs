@@ -11,11 +11,11 @@ public class Base5Logarithm implements MathFunction {
 
     @Override
     public double evaluate(double x) {
-        return naturalLogarithm.evaluate(x) / naturalLogarithm.evaluate(5.);
+        return naturalLogarithm.evaluate(x) / 1.60943791243;
     }
 
     @Override
     public double evaluate(double x, double accuracy) {
-        return naturalLogarithm.evaluate(x, accuracy) / naturalLogarithm.evaluate(5., accuracy);
+        return naturalLogarithm.evaluate(x, accuracy) / 1.60943791243;
     }
 }

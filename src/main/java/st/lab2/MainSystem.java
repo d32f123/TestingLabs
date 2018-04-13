@@ -10,6 +10,8 @@ import st.lab2.func.trigonometric.SecantFunction;
 import st.lab2.func.trigonometric.SineFunction;
 
 public class MainSystem implements MathFunction {
+    private static final double DEFAULT_ACCURACY = 0.000000001;
+
     private CosecantFunction cosecantFunction;
     private SecantFunction secantFunction;
     private SineFunction sineFunction;
@@ -35,14 +37,7 @@ public class MainSystem implements MathFunction {
 
     @Override
     public double evaluate(double x) {
-        if (x <= 0) {
-            return cosecantFunction.evaluate(x) / sineFunction.evaluate(x) / secantFunction.evaluate(x);
-        } else {
-            return ((Math.pow(base3Logarithm.evaluate(x) / base10Logarithm.evaluate(x), 3) + base3Logarithm.evaluate(x) ) *
-                    base10Logarithm.evaluate(x)) *
-                    ( Math.pow(base5Logarithm.evaluate(x) + ((base10Logarithm.evaluate(x) * base2Logarithm.evaluate(x))
-                            + base2Logarithm.evaluate(x)), 2) );
-        }
+        return evaluate(x, DEFAULT_ACCURACY);
     }
 
     @Override

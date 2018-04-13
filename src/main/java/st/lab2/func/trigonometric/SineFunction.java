@@ -47,20 +47,6 @@ public class SineFunction implements MathFunction {
         }
     }
 
-    private double truncateX(double x) {
-        // if x is larger than the first sine wave, truncate it
-        if (Math.abs(x) >= Math.PI) {
-            int waveNumber = (int)((Math.abs(x) + Math.PI) / (2 * Math.PI));
-
-            if (x < 0)
-                waveNumber = (-waveNumber);
-
-            // do the truncation
-            x = x - 2 * Math.PI * waveNumber;
-        }
-        return x;
-    }
-
     private double doCalculation(double x, int n) {
         double answer = 0.0;
         for (int i = 0; i <= n; ++i)
@@ -80,8 +66,6 @@ public class SineFunction implements MathFunction {
     /* Evaluate at X */
     @Override
     public double evaluate(double x) {
-        x = truncateX(x);
-
         int n = 1;
 
         // calculate needed accuracy
