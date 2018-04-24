@@ -17,17 +17,17 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
 public class FunctionMocker {
-    private static final String SineFile = "sin.csv";
-    private static final String CosineFile = "cos.csv";
-    private static final String SecantFile = "sec.csv";
-    private static final String CosecantFile = "csc.csv";
-    private static final String Log2File = "log2.csv";
-    private static final String Log3File = "log3.csv";
-    private static final String Log5File = "log5.csv";
-    private static final String Log10File = "log10.csv";
-    private static final String NaturalLogFile = "ln.csv";
-    private static final String SubSystem1File = "sub1.csv";
-    private static final String SubSystem2File = "sub2.csv";
+    private static final String SineFile = "csv/sin.csv";
+    private static final String CosineFile = "csv/cos.csv";
+    private static final String SecantFile = "csv/sec.csv";
+    private static final String CosecantFile = "csv/csc.csv";
+    private static final String Log2File = "csv/log2.csv";
+    private static final String Log3File = "csv/log3.csv";
+    private static final String Log5File = "csv/log5.csv";
+    private static final String Log10File = "csv/log10.csv";
+    private static final String NaturalLogFile = "csv/ln.csv";
+    private static final String SubSystem1File = "csv/sub1.csv";
+    private static final String SubSystem2File = "csv/sub2.csv";
 
 
     private static SineFunction sineFunctionStub;

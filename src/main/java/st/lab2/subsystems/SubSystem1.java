@@ -1,5 +1,7 @@
 package st.lab2.subsystems;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import st.lab2.func.MathFunction;
 import st.lab2.func.trigonometric.CosecantFunction;
 import st.lab2.func.trigonometric.SecantFunction;
@@ -9,6 +11,7 @@ public class SubSystem1 implements MathFunction {
     private CosecantFunction cosecantFunction;
     private SineFunction sineFunction;
     private SecantFunction secantFunction;
+    private final static Logger log = LogManager.getLogger("SubSystem1");
 
     private static final double ACCURACY = 0.000001;
 
@@ -25,8 +28,10 @@ public class SubSystem1 implements MathFunction {
 
     @Override
     public double evaluate(double x, double accuracy) {
-        return cosecantFunction.evaluate(x, accuracy)
+        double res = cosecantFunction.evaluate(x, accuracy)
                 / sineFunction.evaluate(x, accuracy)
                 / secantFunction.evaluate(x, accuracy);
+        log.info("Subsystem1: {} {}", x, res);
+        return res;
     }
 }

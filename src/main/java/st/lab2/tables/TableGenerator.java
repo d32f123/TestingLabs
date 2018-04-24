@@ -77,7 +77,7 @@ public class TableGenerator {
 
         Writer writer;
         try {
-            writer = new FileWriter(outFile);
+            writer = new FileWriter(outFile, append);
 
             for (Point point : points)
                 writer.write("" + point.getX() + "," + point.getY() + "\n");

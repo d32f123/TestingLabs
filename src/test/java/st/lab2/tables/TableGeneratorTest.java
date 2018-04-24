@@ -22,8 +22,8 @@ class TableGeneratorTest {
     @BeforeEach
     void setUp() {
         try {
-            trigValues = Files.lines(Paths.get("trigBPs.csv")).collect(Collectors.toList());
-            logValues = Files.lines(Paths.get("logBPs.csv")).collect(Collectors.toList());
+            trigValues = Files.lines(Paths.get("csv/trigBPs.csv")).collect(Collectors.toList());
+            logValues = Files.lines(Paths.get("csv/logBPs.csv")).collect(Collectors.toList());
         } catch (Exception ex) {
             throw new IllegalArgumentException("whoops");
         }
@@ -44,16 +44,16 @@ class TableGeneratorTest {
     @Test
     void generateValues() {
         tableGenerator.generate(trigValues, (x) -> (1. / sin(x)) / sin(x) / (1. / cos(x)),
-                "values.csv");
+                "csv/values.csv");
         tableGenerator.generateAppend(logValues, x -> ((Math.pow(Math.log(x) / Math.log(3) / Math.log10(x), 3) + (Math.log(x) / Math.log(3)) ) *
                 Math.log10(x)) *
                 ( Math.pow((Math.log(x) / Math.log(5)) + ((Math.log10(x) * (Math.log(x) / Math.log(2)))
-                        + (Math.log(x) / Math.log(2))), 2) ), "values.csv");
+                        + (Math.log(x) / Math.log(2))), 2) ), "csv/values.csv");
     }
 
     @Test
     void generateSub1() {
-        tableGenerator.generate(trigValues, (x) -> (1. / sin(x)) / sin(x) / (1. / cos(x)), "sub1.csv");
+        tableGenerator.generate(trigValues, (x) -> (1. / sin(x)) / sin(x) / (1. / cos(x)), "csv/sub1.csv");
     }
 
     @Test
@@ -61,51 +61,51 @@ class TableGeneratorTest {
         tableGenerator.generate(logValues, x -> ((Math.pow(Math.log(x) / Math.log(3) / Math.log10(x), 3) + (Math.log(x) / Math.log(3)) ) *
                 Math.log10(x)) *
                 ( Math.pow((Math.log(x) / Math.log(5)) + ((Math.log10(x) * (Math.log(x) / Math.log(2)))
-                        + (Math.log(x) / Math.log(2))), 2) ), "sub2.csv");
+                        + (Math.log(x) / Math.log(2))), 2) ), "csv/sub2.csv");
     }
 
     @Test
     void generateCosine() {
-        tableGenerator.generate(trigValues, TableGeneratorTest::cos, "cos.csv");
+        tableGenerator.generate(trigValues, TableGeneratorTest::cos, "csv/cos.csv");
     }
 
     @Test
     void generateSine() {
-        tableGenerator.generate(trigValues, TableGeneratorTest::sin, "sin.csv");
+        tableGenerator.generate(trigValues, TableGeneratorTest::sin, "csv/sin.csv");
     }
 
     @Test
     void generateCosecant() {
-        tableGenerator.generate(trigValues, x -> 1. / sin(x), "csc.csv");
+        tableGenerator.generate(trigValues, x -> 1. / sin(x), "csv/csc.csv");
     }
 
     @Test
     void generateSecant() {
-        tableGenerator.generate(trigValues, x -> 1. / cos(x), "sec.csv");
+        tableGenerator.generate(trigValues, x -> 1. / cos(x), "csv/sec.csv");
     }
 
     @Test
     void generateLn() {
-        tableGenerator.generate(logValues, Math::log, "ln.csv");
+        tableGenerator.generate(logValues, Math::log, "csv/ln.csv");
     }
 
     @Test
     void generateLog2() {
-        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(2), "log2.csv");
+        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(2), "csv/log2.csv");
     }
 
     @Test
     void generateLog3() {
-        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(3), "log3.csv");
+        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(3), "csv/log3.csv");
     }
 
     @Test
     void generateLog5() {
-        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(5), "log5.csv");
+        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(5), "csv/log5.csv");
     }
 
     @Test
     void generateLog10() {
-        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(10), "log10.csv");
+        tableGenerator.generate(logValues, x -> Math.log(x) / Math.log(10), "csv/log10.csv");
     }
 }
