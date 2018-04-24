@@ -40,7 +40,7 @@ public class DriverFactory {
     public static Collection<WebDriver> getNewDrivers() {
         drivers = new ArrayList<>(2);
         drivers.add(new FirefoxDriver());
-        drivers.add(new ChromeDriver());
+        //drivers.add(new ChromeDriver());
         loggedIn = false;
         return drivers;
     }
