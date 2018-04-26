@@ -1,43 +1,32 @@
-package st.lab3;
+package st.lab3.messages;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import st.lab3.helpers.DriverFactory;
+import st.lab3.helpers.MailTester;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SendMessageTests {
+@Tag("CreateTests")
+public class SendMessageTests extends MailTester {
 
-    Lock sequential = new ReentrantLock();
-
-    @BeforeEach
-    void setUp() {
-        sequential.lock();
+    private void sendMail(WebDriver driver) {
+        // send
+        driver.findElement(By.xpath("//div[@data-mnemo='toolbar-compose']//span[contains(text(), 'Отправить')]")).click();
+        try {
+            driver.switchTo().alert().accept();
+            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPIENT_EMAIL);
+            driver.findElement(By.xpath("//div[@data-mnemo='toolbar-compose']//span[contains(text(), 'Отправить')]")).click();
+        } catch (NoAlertPresentException ex) { } finally {
+            driver.switchTo().defaultContent();
+        }
     }
-
-    @AfterEach
-    void tearDown() {
-        sequential.unlock();
-    }
-
-    @BeforeAll
-    static void preAll() {
-        DriverFactory.getDrivers();
-    }
-
-    @AfterAll
-    static void tearAll() {
-        //DriverFactory.tearDown();
-    }
-
-    private static final String RECIPENT_EMAIL = "d32f123@mail.ru";
-    private static final String THEME_EMAIL = "some theme";
-    private static final String BODY_EMAIL = "hello there! how is it going";
 
     @Test
     void validLetterSendTest() {
@@ -51,10 +40,10 @@ public class SendMessageTests {
                     By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")));
 
             // input recipent
-            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPENT_EMAIL);
+            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPIENT_EMAIL);
             // input topic
-            driver.findElement(By.cssSelector(".compose-head__row_nohr > div:nth-child(2) > div:nth-child(1) > input:nth-child(1)")).click();
-            driver.findElement(By.cssSelector(".compose-head__row_nohr > div:nth-child(2) > div:nth-child(1) > input:nth-child(1)")).sendKeys(THEME_EMAIL);
+            driver.findElement(By.xpath("//div[@class='compose-head']//input[@name='Subject']")).click();
+            driver.findElement(By.xpath("//div[@class='compose-head']//input[@name='Subject']")).sendKeys(THEME_EMAIL);
 
             // input main body
             driver.switchTo().frame(driver.findElement(By.xpath("//div[@class='compose__editor']//iframe")));
@@ -65,18 +54,16 @@ public class SendMessageTests {
             driver.switchTo().defaultContent();
 
             // send
-            driver.findElement(By.cssSelector("div.b-toolbar__item_:nth-child(1) > div:nth-child(1)")).click();
+            sendMail(driver);
 
             new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".message-sent__title")));
 
             // assert
             driver.get("https://e.mail.ru/messages/sent/");
-            new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                    By.xpath("//div[@class='b-datalist__item js-datalist-item']")));
 
             WebElement email = driver.findElement(By.xpath("//div[@class='b-datalist__item js-datalist-item'][1]"));
             assertTrue(email.getText().contains(BODY_EMAIL));
-            assertTrue(email.getText().contains(RECIPENT_EMAIL));
+            assertTrue(email.getText().contains(RECIPIENT_EMAIL));
             assertTrue(email.getText().contains(THEME_EMAIL));
         });
     }
@@ -89,27 +76,27 @@ public class SendMessageTests {
 
             new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(
                     By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")));
-            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPENT_EMAIL);
-            driver.findElement(By.cssSelector(".compose-head__row_nohr > div:nth-child(2) > div:nth-child(1) > input:nth-child(1)")).click();
-            driver.findElement(By.cssSelector(".compose-head__row_nohr > div:nth-child(2) > div:nth-child(1) > input:nth-child(1)")).sendKeys(THEME_EMAIL);
+            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPIENT_EMAIL);
+            driver.findElement(By.xpath("//div[@class='compose-head']//input[@name='Subject']")).click();
+            driver.findElement(By.xpath("//div[@class='compose-head']//input[@name='Subject']")).sendKeys(THEME_EMAIL);
+
+
 
             // send
-            driver.findElement(By.cssSelector("div.b-toolbar__item_:nth-child(1) > div:nth-child(1)")).click();
+            sendMail(driver);
 
             // confirm send
             new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(
-                    By.cssSelector(".is-compose-empty_in > form:nth-child(1) > div:nth-child(2) > button:nth-child(1)")
+                    By.xpath("//div[@class='is-compose-empty_in']//button[@type='submit']")
             ));
-            driver.findElement(By.cssSelector(".is-compose-empty_in > form:nth-child(1) > div:nth-child(2) > button:nth-child(1)")).click();
+            driver.findElement(By.xpath("//div[@class='is-compose-empty_in']//button[@type='submit']")).click();
 
 
 
             // assert
             driver.get("https://e.mail.ru/messages/sent/");
-            new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                    By.xpath("//div[@class='b-datalist__item js-datalist-item']")));
 
-            assertTrue(driver.findElement(By.xpath("//div[@class='b-datalist__item js-datalist-item'][1]")).getText().contains(RECIPENT_EMAIL));
+            assertTrue(driver.findElement(By.xpath("//div[@class='b-datalist__item js-datalist-item'][1]")).getText().contains(RECIPIENT_EMAIL));
             assertTrue(driver.findElement(By.xpath("//div[@class='b-datalist__item js-datalist-item'][1]")).getText().contains(THEME_EMAIL));
         });
     }
@@ -122,7 +109,7 @@ public class SendMessageTests {
             composeButton.click();
             new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(
                     By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")));
-            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPENT_EMAIL);
+            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPIENT_EMAIL);
 
             driver.switchTo().frame(driver.findElement(
                     By.xpath("//div[@class='compose__editor']//iframe")));
@@ -132,7 +119,7 @@ public class SendMessageTests {
             driver.switchTo().defaultContent();
 
             // send
-            driver.findElement(By.cssSelector("div.b-toolbar__item_:nth-child(1) > div:nth-child(1)")).click();
+            sendMail(driver);
 
             // confirm send
             //driver.findElement(By.cssSelector(".is-compose-empty_in > form:nth-child(1) > div:nth-child(2) > button:nth-child(1)")).click();
@@ -140,12 +127,10 @@ public class SendMessageTests {
 
             // assert
             driver.get("https://e.mail.ru/messages/sent/");
-            new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                    By.xpath("//div[@class='b-datalist__item js-datalist-item']")));
 
             WebElement email = driver.findElement(By.xpath("//div[@class='b-datalist__item js-datalist-item'][1]"));
             assertTrue(email.getText().contains(BODY_EMAIL));
-            assertTrue(email.getText().contains(RECIPENT_EMAIL));
+            assertTrue(email.getText().contains(RECIPIENT_EMAIL));
         });
     }
 
@@ -158,12 +143,20 @@ public class SendMessageTests {
             composeButton.click();
             new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(
                     By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")));
-            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPENT_EMAIL);
+            driver.findElement(By.xpath("//div[@class='compose-head']//textarea[@class='js-input compose__labels__input']")).sendKeys(RECIPIENT_EMAIL);
 
+
+            Actions actions = new Actions(driver);
             // press cancel
-            driver.findElement(
-                    By.cssSelector("#b-toolbar__right > div:nth-child(3) > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > span:nth-child(1)"
-                    )).click();
+            actions.moveToElement(driver.findElement(By.xpath("//div[@data-mnemo='toolbar-compose']//span[@class='b-toolbar__btn__text' and text() = 'Отмена']")))
+                    .doubleClick()
+                    .build().perform();
+
+            try {
+                driver.switchTo().alert().accept();
+            } catch (NoAlertPresentException ex) { } finally {
+                driver.switchTo().defaultContent();
+            }
 
             // assert
             new WebDriverWait(driver, 5).until(d -> !d.getTitle().contains("Новое письмо"));
